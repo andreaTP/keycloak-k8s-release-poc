@@ -64,6 +64,11 @@ jobs:
 
           cp -r keycloak/operator/target/kubernetes/*.yml ${{steps.version.outputs.version}}/kubernetes
 
+      - name: Create OLM bundle
+        run: |
+          snap install yq
+          ./create-olm-bundle.sh ${{steps.version.outputs.version}}
+
       - name: Delete current tag
         run: |
           git tag -d ${{steps.version.outputs.version}} | true
