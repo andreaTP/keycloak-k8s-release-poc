@@ -1,0 +1,72 @@
+name: Keycloak Operator CI
+
+on:
+  workflow_dispatch:
+  push:
+    tags:
+      - '[0-9]+.[0-9]+.[0-9]+'
+
+env:
+  JDK_VERSION: 11
+
+concurrency:
+  # Only run once for latest commit per ref and cancel other (previous) runs.
+  group: ci-operator-keycloak-${{ github.ref }}
+  cancel-in-progress: true
+concurrency: keycloak-kubernetes-resources-release
+
+jobs:
+  build:
+    name: Build
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+
+      - name: Calculate version
+        id: version
+        run: |
+          [ -n "${{github.ref_name}}" ] && \
+            (echo "::set-output name=branch::${{github.ref_name}}" && \
+             echo "::set-output name=version::${{github.ref_name}}") || \
+            (echo "::set-output name=version::main" \
+             echo "::set-output name=version::latest")
+    
+      - name: Check version
+        run: |
+          echo "branch is:"
+          echo ${{steps.version.outputs.branch}}
+          echo "version is:"
+          echo ${{steps.version.outputs.version}}
+
+      - name: Update maven settings
+        run: mkdir -p ~/.m2 ; cp .github/settings.xml ~/.m2/
+
+      - uses: actions/setup-java@v1
+        with:
+          java-version: ${{ env.JDK_VERSION }}
+
+      - name: Cache Maven packages
+        id: cache
+        uses: actions/cache@v2
+        with:
+          path: |
+            ~/.m2/repository
+          key: cache-1-${{ runner.os }}-m2-${{ hashFiles('**/pom.xml') }}
+          restore-keys: cache-1-${{ runner.os }}-m2
+
+      - name: Clone Keycloak
+        run: |
+          git clone --branch ${{steps.version.outputs.branch}} --depth 1 https://github.com/keycloak/keycloak.git
+
+      - name: Build operator artifacts
+        working-directory: keycloak
+        run: |
+          mvn -P operator -pl operator -am clean install -DskipTests \
+              -Dquarkus.kubernetes.deployment-target=kubernetes,openshift,minikube
+
+      - name: Create kubernetes resources
+        run: |
+          rm -rf ${{steps.version.outputs.version}}
+          mkdir -p ${{steps.version.outputs.version}}
+
+          echo "go on ..."
