@@ -64,9 +64,13 @@ jobs:
 
           cp -r keycloak/operator/target/kubernetes/*.yml ${{steps.version.outputs.version}}/kubernetes
 
+      - name: Delete current tag
+        run: |
+          git push --delete origin ${{steps.version.outputs.version}}
+
       - uses: stefanzweifel/git-auto-commit-action@v4
         with:
           commit_message: Release resources for version ${{steps.version.outputs.version}}
           commit_options: '--no-verify --signoff'
-          tagging_message: v${{steps.version.outputs.version}}
+          tagging_message: ${{steps.version.outputs.version}}
           disable_globbing: true
