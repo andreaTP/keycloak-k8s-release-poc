@@ -98,5 +98,5 @@ jobs:
           git add .
           git commit -m "Automatic update"
           git tag ${{steps.version.outputs.version}}
-          git push origin HEAD:main --force
+          git push origin HEAD:refs/heads/main --force
           git push origin ${{steps.version.outputs.version}}
