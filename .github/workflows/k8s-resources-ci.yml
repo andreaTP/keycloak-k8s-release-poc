@@ -90,13 +90,13 @@ jobs:
           git config --global user.email "andrea.peruffo1982@gmail.com"
           git config --global user.name "Andrea Peruffo"
 
+          # Delete old tags
           git tag -d ${{steps.version.outputs.version}} | true
           git push --delete origin ${{steps.version.outputs.version}} | true
 
-          git tag ${{steps.version.outputs.version}}
+          # Update the main branch and tag it accordingly
           git add .
           git commit -m "Automatic update"
-          git push --force
-
-          git checkout -b ${{steps.version.outputs.version}}
-          git push -u origin ${{steps.version.outputs.version}} --force
+          git tag ${{steps.version.outputs.version}}
+          git push origin HEAD:main --force
+          git push origin ${{steps.version.outputs.version}}
