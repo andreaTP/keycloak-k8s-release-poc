@@ -5,15 +5,10 @@ on:
   push:
     tags:
       - '[0-9]+.[0-9]+.[0-9]+'
+concurrency: keycloak-kubernetes-resources-release
 
 env:
   JDK_VERSION: 11
-
-concurrency:
-  # Only run once for latest commit per ref and cancel other (previous) runs.
-  group: ci-operator-keycloak-${{ github.ref }}
-  cancel-in-progress: true
-concurrency: keycloak-kubernetes-resources-release
 
 jobs:
   build:
