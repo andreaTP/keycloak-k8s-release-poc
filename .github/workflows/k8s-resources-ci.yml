@@ -66,6 +66,7 @@ jobs:
 
       - name: Delete current tag
         run: |
+          git tag -d ${{steps.version.outputs.version}} | true
           git push --delete origin ${{steps.version.outputs.version}} | true
 
       - uses: stefanzweifel/git-auto-commit-action@v4
