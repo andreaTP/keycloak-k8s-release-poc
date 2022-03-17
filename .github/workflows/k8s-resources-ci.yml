@@ -75,12 +75,25 @@ jobs:
       #     git tag -d ${{steps.version.outputs.version}} | true
       #     git push --delete origin ${{steps.version.outputs.version}} | true
 
-      - uses: stefanzweifel/git-auto-commit-action@master
-        with:
-          commit_message: Release resources for version ${{steps.version.outputs.version}}
-          commit_options: '--no-verify --signoff'
-          # branch: main
-          # tagging_message: ${{steps.version.outputs.version}}
-          disable_globbing: true
-          push_options: '--force'
-          # create_branch: true
+      # - uses: stefanzweifel/git-auto-commit-action@master
+      #   with:
+      #     commit_message: Release resources for version ${{steps.version.outputs.version}}
+      #     commit_options: '--no-verify --signoff'
+      #     # branch: main
+      #     # tagging_message: ${{steps.version.outputs.version}}
+      #     disable_globbing: true
+      #     push_options: '--force'
+      #     # create_branch: true
+
+      - name: Update the repository
+        run: |
+          git tag -d ${{steps.version.outputs.version}} | true
+          git push --delete origin ${{steps.version.outputs.version}} | true
+
+          git tag ${{steps.version.outputs.version}}
+          git add .
+          git commit -m "Automatic update"
+          git push --force
+
+          git checkout -b ${{steps.version.outputs.version}}
+          git push -u origin ${{steps.version.outputs.version}} --force
