@@ -73,6 +73,7 @@ jobs:
         with:
           commit_message: Release resources for version ${{steps.version.outputs.version}}
           commit_options: '--no-verify --signoff'
+          branch: ${{steps.version.outputs.version}}
           tagging_message: ${{steps.version.outputs.version}}
           disable_globbing: true
           push_options: '--force'
