@@ -21,5 +21,5 @@ export REPLACE_ME_CREATED_AT=$(date "+%D %T")
 envsubst < "$VERSION/olm/manifests/clusterserviceversion.yaml" > "$VERSION/manifests/keycloak-operator.v$VERSION.clusterserviceversion.yaml"
 rm $VERSION/olm/manifests/clusterserviceversion.yaml
 
-# TODO: this should be updated in `main`, possibly automatically
-echo "$REPLACES_VERSION" > latest_version.txt
+# TODO: check if this actually changes the file
+[ "$VERSION" = "latest" ] && echo "skip storing version" || echo "$REPLACES_VERSION" > latest_version.txt

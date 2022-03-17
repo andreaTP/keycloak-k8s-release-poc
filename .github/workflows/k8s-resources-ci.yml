@@ -66,7 +66,7 @@ jobs:
 
       - name: Create OLM bundle
         run: |
-          snap install yq
+          sudo snap install yq
           ./create-olm-bundle.sh ${{steps.version.outputs.version}}
 
       - name: Delete current tag
