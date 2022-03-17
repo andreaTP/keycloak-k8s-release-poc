@@ -20,18 +20,16 @@ jobs:
       - name: Calculate version
         id: version
         run: |
-          [ -n "${{github.ref_name}}" ] && \
-            (echo "::set-output name=branch::${{github.ref_name}}" && \
-             echo "::set-output name=version::${{github.ref_name}}") || \
-            (echo "::set-output name=branch::main" \
-             echo "::set-output name=version::latest")
-    
+          echo "::set-output name=branch::${{github.ref_name}}"
+
+          [ "${{github.ref_name}}" = "main" ] && \
+            echo "::set-output name=version::latest" || \
+            echo "::set-output name=version::${{github.ref_name}}"
+
       - name: Check version
         run: |
-          echo "branch is:"
-          echo ${{steps.version.outputs.branch}}
-          echo "version is:"
-          echo ${{steps.version.outputs.version}}
+          echo "Branch: ${{steps.version.outputs.branch}}"
+          echo "Version: ${{steps.version.outputs.version}}"
 
       - name: Update maven settings
         run: mkdir -p ~/.m2 ; cp .github/settings.xml ~/.m2/
