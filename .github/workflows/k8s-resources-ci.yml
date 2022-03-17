@@ -69,10 +69,11 @@ jobs:
           git tag -d ${{steps.version.outputs.version}} | true
           git push --delete origin ${{steps.version.outputs.version}} | true
 
-      - uses: stefanzweifel/git-auto-commit-action@v4
+      - uses: stefanzweifel/git-auto-commit-action@master
         with:
           commit_message: Release resources for version ${{steps.version.outputs.version}}
           commit_options: '--no-verify --signoff'
           tagging_message: ${{steps.version.outputs.version}}
           disable_globbing: true
           push_options: '--force'
+          create_branch: true
