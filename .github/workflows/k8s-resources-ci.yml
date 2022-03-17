@@ -70,3 +70,4 @@ jobs:
           commit_options: '--no-verify --signoff'
           tagging_message: ${{steps.version.outputs.version}}
           disable_globbing: true
+          push_options: '--force'
