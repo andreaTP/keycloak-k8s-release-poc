@@ -67,8 +67,9 @@ jobs:
       - name: Create OLM bundle
         run: |
           sudo snap install yq
-          ./create-olm-bundle.sh ${{steps.version.outputs.version}}
+          ./create-olm-bundle.sh ${{steps.version.outputs.version}} $(cat latest_version.txt)
 
+      # TODO: automatic tagging on branches should be better checked
       # - name: Delete current tag
       #   run: |
       #     git tag -d ${{steps.version.outputs.version}} | true
