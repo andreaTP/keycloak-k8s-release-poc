@@ -87,6 +87,9 @@ jobs:
 
       - name: Update the repository
         run: |
+          git config --global user.email "andrea.peruffo1982@gmail.com"
+          git config --global user.name "Andrea Peruffo"
+
           git tag -d ${{steps.version.outputs.version}} | true
           git push --delete origin ${{steps.version.outputs.version}} | true
 
