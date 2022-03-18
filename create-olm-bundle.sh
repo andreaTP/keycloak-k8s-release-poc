@@ -23,4 +23,6 @@ yq ea -i ".spec.replaces = \"$REPLACES_VERSION\"" $VERSION/olm/manifests/cluster
 
 mv $VERSION/olm/manifests/clusterserviceversion.yaml "$VERSION/olm/manifests/keycloak-operator.v$VERSION.clusterserviceversion.yaml"
 
+cp $VERSION/kubernetes/*.keycloak.org-v1.yml $VERSION/olm/manifests
+
 [ "$VERSION" = "latest" ] && echo "skip storing version" || echo "$VERSION" > latest_version.txt
