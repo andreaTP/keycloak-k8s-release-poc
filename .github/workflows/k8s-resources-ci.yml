@@ -100,8 +100,8 @@ jobs:
           path: community-operators
 
       - name: Automatic PR opening
-        env:
-          GITHUB_TOKEN: ${{ secrets.GH_TOKEN }}
+        # env:
+        #   GITHUB_TOKEN: ${{ secrets.GH_TOKEN }}
         run: |
           export ORIGIN_REPO="vmuzikar/community-operators"
           export FORK_REPO="andreaTP/community-operators"
