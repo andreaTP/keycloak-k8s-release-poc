@@ -105,7 +105,6 @@ jobs:
         run: |
           export ORIGIN_REPO="vmuzikar/community-operators"
           export FORK_REPO="andreaTP/community-operators"
-          git clone --branch main --depth 1 "https://github.com/$ORIGIN_REPO.git" # git@github.com:k8s-operatorhub/community-operators.git
           cd community-operators
           git remote add mine "git@github.com:$FORK_REPO.git"
           git checkout -b keycloak-${{steps.version.outputs.version}}
