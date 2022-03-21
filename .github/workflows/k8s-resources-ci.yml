@@ -1,10 +1,9 @@
 name: Keycloak Operator Kubernetes Resources Release
 
 on:
-  # workflow_dispatch:
-  push:
-    # tags:
-    #   - '[0-9]+.[0-9]+.[0-9]+'
+  workflow_dispatch:
+    tags:
+      - '[0-9]+.[0-9]+.[0-9]+'
 concurrency: keycloak-kubernetes-resources-release
 
 env:
@@ -53,10 +52,6 @@ jobs:
           repository: keycloak/keycloak
           path: keycloak
           ref: ${{steps.version.outputs.branch}}
-      # - name: Clone Keycloak
-      #   run: |
-      #     ssh -vT git@github.com
-      #     git clone --branch ${{steps.version.outputs.branch}} --depth 1 https://github.com/keycloak/keycloak.git
 
       - name: Build operator artifacts
         working-directory: keycloak
@@ -92,7 +87,7 @@ jobs:
           git push origin HEAD:refs/heads/main --force
           git push origin ${{steps.version.outputs.version}}
 
-      # TEST automatic opening PR
+      # Automatic PR
       - name: Clone community-operators
         uses: actions/checkout@v3
         with:
