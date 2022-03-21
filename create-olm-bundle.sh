@@ -19,7 +19,8 @@ yq ea -i ".metadata.annotations.containerImage = \"quay.io/keycloak/keycloak-ope
 yq ea -i ".metadata.annotations.createdAt = \"$CREATED_AT\"" $VERSION/olm/manifests/clusterserviceversion.yaml && \
 yq ea -i ".metadata.name = \"keycloak-operator.v$VERSION\"" $VERSION/olm/manifests/clusterserviceversion.yaml && \
 yq ea -i ".spec.install.spec.deployments[0].spec.template.spec.containers[0].image = \"quay.io/keycloak/keycloak-operator:$VERSION\"" $VERSION/olm/manifests/clusterserviceversion.yaml && \
-yq ea -i ".spec.replaces = \"$REPLACES_VERSION\"" $VERSION/olm/manifests/clusterserviceversion.yaml
+yq ea -i ".spec.replaces = \"$REPLACES_VERSION\"" $VERSION/olm/manifests/clusterserviceversion.yaml && \
+yq ea -i ".spec.version = \"$VERSION\"" $VERSION/olm/manifests/clusterserviceversion.yaml
 
 mv $VERSION/olm/manifests/clusterserviceversion.yaml "$VERSION/olm/manifests/keycloak-operator.v$VERSION.clusterserviceversion.yaml"
 

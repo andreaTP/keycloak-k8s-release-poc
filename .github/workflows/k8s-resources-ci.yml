@@ -69,22 +69,6 @@ jobs:
           sudo snap install yq
           ./create-olm-bundle.sh ${{steps.version.outputs.version}} $(cat latest_version.txt)
 
-      # TODO: automatic tagging on branches should be better checked
-      # - name: Delete current tag
-      #   run: |
-      #     git tag -d ${{steps.version.outputs.version}} | true
-      #     git push --delete origin ${{steps.version.outputs.version}} | true
-
-      # - uses: stefanzweifel/git-auto-commit-action@master
-      #   with:
-      #     commit_message: Release resources for version ${{steps.version.outputs.version}}
-      #     commit_options: '--no-verify --signoff'
-      #     # branch: main
-      #     # tagging_message: ${{steps.version.outputs.version}}
-      #     disable_globbing: true
-      #     push_options: '--force'
-      #     # create_branch: true
-
       - name: Update the repository
         run: |
           git config --global user.email "andrea.peruffo1982@gmail.com"
@@ -100,3 +84,19 @@ jobs:
           git tag ${{steps.version.outputs.version}}
           git push origin HEAD:refs/heads/main --force
           git push origin ${{steps.version.outputs.version}}
+
+      # TEST automatic opening PR
+      - name: Clone Keycloak
+        run: |
+          export ORIGIN_REPO="vmuzikar/community-operators"
+          export FORK_REPO="andreaTP/community-operators"
+          git clone --branch main --depth 1 "git@github.com:$ORIGIN_REPO.git" # git@github.com:k8s-operatorhub/community-operators.git
+          cd community-operators
+          git remote add mine "git@github.com:$FORK_REPO.git"
+          git checkout -b keycloak-${{steps.version.outputs.version}}
+          mkdir -p operators/keycloak-operator/${{steps.version.outputs.version}}
+          cp -r ../${{steps.version.outputs.version}}/olm/* operators/keycloak-operator/${{steps.version.outputs.version}}/
+          git add .
+          git commit -m "Bump Keycloak operator to ${{steps.version.outputs.version}}"
+          git push -u mine keycloak-${{steps.version.outputs.version}}
+          gh pr create --title "Bump Keycloak operator to ${{steps.version.outputs.version}}" --fill --repo $ORIGIN_REPO
