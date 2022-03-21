@@ -96,6 +96,7 @@ jobs:
 
       - name: Automatic PR opening
         env:
+          # here we need wider permissions
           GITHUB_TOKEN: ${{ secrets.GH_TOKEN }}
         run: |
           export ORIGIN_REPO="vmuzikar/community-operators"
@@ -107,6 +108,7 @@ jobs:
           cp -r ../${{steps.version.outputs.version}}/olm/* operators/keycloak-operator/${{steps.version.outputs.version}}/
           git add .
           git commit -m "Bump Keycloak operator to ${{steps.version.outputs.version}}"
+          # WORKAROUND to make push works, check if it can be removed
           git config -l | grep 'http\..*\.extraheader' | cut -d= -f1 | xargs -L1 git config --unset-all
           echo "need to fix permissions ..."
           git push -u mine keycloak-${{steps.version.outputs.version}}
