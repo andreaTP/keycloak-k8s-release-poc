@@ -93,6 +93,12 @@ jobs:
           git push origin ${{steps.version.outputs.version}}
 
       # TEST automatic opening PR
+      - name: Clone community-operators
+        uses: actions/checkout@v3
+        with:
+          repository: vmuzikar/community-operators
+          path: community-operators
+
       - name: Automatic PR opening
         env:
           GITHUB_TOKEN: ${{ secrets.GH_TOKEN }}
