@@ -106,11 +106,13 @@ jobs:
           export ORIGIN_REPO="vmuzikar/community-operators"
           export FORK_REPO="andreaTP/community-operators"
           cd community-operators
-          git remote add mine "https://$GITHUB_TOKEN@github.com/$FORK_REPO.git"
+          git remote add mine "https://andreaTP:${{ env.GITHUB_TOKEN }}@github.com/$FORK_REPO.git"
           git checkout -b keycloak-${{steps.version.outputs.version}}
           mkdir -p operators/keycloak-operator/${{steps.version.outputs.version}}
           cp -r ../${{steps.version.outputs.version}}/olm/* operators/keycloak-operator/${{steps.version.outputs.version}}/
           git add .
           git commit -m "Bump Keycloak operator to ${{steps.version.outputs.version}}"
+          git config -l | grep 'http\..*\.extraheader' | cut -d= -f1 | xargs -L1 git config --unset-all
+          echo "need to fix permissions ..."
           git push -u mine keycloak-${{steps.version.outputs.version}}
           gh pr create --title "Bump Keycloak operator to ${{steps.version.outputs.version}}" --fill --repo $ORIGIN_REPO
