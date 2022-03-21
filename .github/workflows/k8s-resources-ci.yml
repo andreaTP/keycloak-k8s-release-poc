@@ -106,7 +106,7 @@ jobs:
           export ORIGIN_REPO="vmuzikar/community-operators"
           export FORK_REPO="andreaTP/community-operators"
           cd community-operators
-          git remote add mine "git@github.com:$FORK_REPO.git"
+          git remote add mine "https://$GITHUB_TOKEN@github.com/$FORK_REPO.git"
           git checkout -b keycloak-${{steps.version.outputs.version}}
           mkdir -p operators/keycloak-operator/${{steps.version.outputs.version}}
           cp -r ../${{steps.version.outputs.version}}/olm/* operators/keycloak-operator/${{steps.version.outputs.version}}/
