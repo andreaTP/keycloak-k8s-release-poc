@@ -48,9 +48,15 @@ jobs:
           restore-keys: cache-1-${{ runner.os }}-m2
 
       - name: Clone Keycloak
-        run: |
-          ssh -vT git@github.com
-          git clone --branch ${{steps.version.outputs.branch}} --depth 1 https://github.com/keycloak/keycloak.git
+        uses: actions/checkout@v3
+        with:
+          repository: keycloak/keycloak
+          path: keycloak
+          ref: ${{steps.version.outputs.branch}}
+      # - name: Clone Keycloak
+      #   run: |
+      #     ssh -vT git@github.com
+      #     git clone --branch ${{steps.version.outputs.branch}} --depth 1 https://github.com/keycloak/keycloak.git
 
       - name: Build operator artifacts
         working-directory: keycloak
