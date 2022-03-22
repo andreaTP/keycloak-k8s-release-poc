@@ -110,6 +110,5 @@ jobs:
           git commit -m "Bump Keycloak operator to ${{steps.version.outputs.version}}"
           # WORKAROUND to make push works, check if it can be removed
           git config -l | grep 'http\..*\.extraheader' | cut -d= -f1 | xargs -L1 git config --unset-all
-          echo "need to fix permissions ..."
           git push -u mine keycloak-${{steps.version.outputs.version}}
           gh pr create --title "Bump Keycloak operator to ${{steps.version.outputs.version}}" --fill --repo $ORIGIN_REPO
