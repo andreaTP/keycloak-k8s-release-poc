@@ -1,0 +1,13 @@
+apiVersion: operators.coreos.com/v1alpha1
+kind: CatalogSource
+metadata:
+  name: test-catalog
+  # namespace: operator
+spec:
+  sourceType: grpc
+  image: docker.io/andreatp/keycloak-catalog:latest
+  displayName: Keycloak Test Catalog
+  publisher: Me
+  updateStrategy:
+    registryPoll:
+      interval: 10m

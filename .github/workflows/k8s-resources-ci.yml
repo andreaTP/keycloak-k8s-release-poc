@@ -66,16 +66,44 @@ jobs:
 
           cp -r keycloak/operator/target/kubernetes/*.yml ${{steps.version.outputs.version}}/kubernetes
 
-      - name: Create OLM bundle
-        run: |
-          sudo snap install yq
-          ./create-olm-bundle.sh ${{steps.version.outputs.version}} $(cat latest_version.txt)
+      # start minikube
 
-      - name: Test the OLM bundle
-        run: |
-          cp test-olm.sh ${{steps.version.outputs.version}}/olm
-          cd ${{steps.version.outputs.version}}/olm
-          ./test-olm.sh
+      # install OLM:
+      # curl -L https://github.com/operator-framework/operator-lifecycle-manager/releases/download/v0.20.0/install.sh -o install.sh
+      # chmod +x install.sh
+      # ./install.sh v0.20.0
+
+      # - name: Create OLM bundle
+      #   run: |
+      #     sudo snap install yq
+      #     ./create-olm-bundle.sh ${{steps.version.outputs.version}} $(cat latest_version.txt)
+
+      # this check can be performed only on sem ver versions?
+      # - name: Test the OLM bundle
+      #   run: |
+      #     cp test-olm.sh ${{steps.version.outputs.version}}/olm
+      #     cd ${{steps.version.outputs.version}}/olm
+      #     ./test-olm.sh
+
+      # - name: Create OLM catalog
+      #   run: |
+      #     ./create-olm-catalog.sh
+
+      # install the catalog
+      # kubectl apply -f catalog.yaml
+
+      # eventually it will appear here:
+
+      # kubectl get packagemanifest
+
+      # Finally install the operator:
+      # kubectl apply -f operatorgroup.yaml
+      # kubectl apply -f subscription.yaml
+
+      # And debug from here ...
+      # missing serviceAccountName now ...
+      # Added, let see:
+      # kubectl get subscriptions keycloak-operator -o json | jq '.status'
 
       - name: Update the repository
         run: |
