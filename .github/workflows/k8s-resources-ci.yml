@@ -71,6 +71,12 @@ jobs:
           sudo snap install yq
           ./create-olm-bundle.sh ${{steps.version.outputs.version}} $(cat latest_version.txt)
 
+      - name: Test the OLM bundle
+        run: |
+          cp test-olm.sh ${{steps.version.outputs.version}}/olm
+          cd ${{steps.version.outputs.version}}/olm
+          ./test-olm.sh
+
       - name: Update the repository
         run: |
           git config --global user.email "andrea.peruffo1982@gmail.com"
