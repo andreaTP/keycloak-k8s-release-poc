@@ -96,6 +96,9 @@ jobs:
 
       # kubectl get packagemanifest
 
+      # Install ServiceAccount and RBAC things
+      # yq e 'select(.apiVersion == "rbac.authorization.k8s.io/v1" or .kind == "ServiceAccount")' 17.0.0/kubernetes/kubernetes.yml | kubectl apply -f -
+
       # Finally install the operator:
       # kubectl apply -f operatorgroup.yaml
       # kubectl apply -f subscription.yaml
@@ -104,6 +107,11 @@ jobs:
       # missing serviceAccountName now ...
       # Added, let see:
       # kubectl get subscriptions keycloak-operator -o json | jq '.status'
+
+      # "error creating service account: : ServiceAccount \"\" is invalid: metadata.name: Required value: name or generateName is required"
+      # check indentation of permissions/rules and it's semantics
+
+      # still issues with the serviceAccount ... -> name is not picked up! -> fix it
 
       - name: Update the repository
         run: |
