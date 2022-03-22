@@ -6,7 +6,7 @@ metadata:
     categories: Security
     certified: 'False'
     containerImage: 'quay.io/keycloak/keycloak-operator:17.0.0'
-    createdAt: 03/17/22 17:21:17
+    createdAt: 03/22/22 17:28:04
     description: 'An Operator for installing and managing Keycloak'
     repository: 'https://github.com/keycloak/keycloak'
     support: Red Hat
@@ -107,69 +107,69 @@ spec:
                     resources: {}
                 serviceAccountName: keycloak-operator
       permissions:
-        rules:
-          - apiGroups:
-              - apps
-            resources:
-              - deployments
-            verbs:
-              - get
-              - list
-              - watch
-              - create
-              - delete
-              - patch
-              - update
-          - apiGroups:
-              - ""
-            resources:
-              - secrets
-            verbs:
-              - get
-              - list
-              - watch
-              - create
-              - delete
-              - patch
-              - update
-          - apiGroups:
-              - batch
-            resources:
-              - jobs
-            verbs:
-              - get
-              - list
-              - watch
-              - create
-              - delete
-              - patch
-              - update
-          - apiGroups:
-              - keycloak.org
-            resources:
-              - keycloaks
-              - keycloaks/status
-            verbs:
-              - get
-              - list
-              - watch
-              - create
-              - delete
-              - patch
-              - update
-          - apiGroups:
-              - keycloak.org
-            resources:
-              - keycloakrealmimports
-              - keycloakrealmimports/status
-            verbs:
-              - get
-              - list
-              - watch
-              - create
-              - delete
-              - patch
-              - update
+        - rules:
+            - apiGroups:
+                - apps
+              resources:
+                - deployments
+              verbs:
+                - get
+                - list
+                - watch
+                - create
+                - delete
+                - patch
+                - update
+            - apiGroups:
+                - ""
+              resources:
+                - secrets
+              verbs:
+                - get
+                - list
+                - watch
+                - create
+                - delete
+                - patch
+                - update
+            - apiGroups:
+                - batch
+              resources:
+                - jobs
+              verbs:
+                - get
+                - list
+                - watch
+                - create
+                - delete
+                - patch
+                - update
+            - apiGroups:
+                - keycloak.org
+              resources:
+                - keycloaks
+                - keycloaks/status
+              verbs:
+                - get
+                - list
+                - watch
+                - create
+                - delete
+                - patch
+                - update
+            - apiGroups:
+                - keycloak.org
+              resources:
+                - keycloakrealmimports
+                - keycloakrealmimports/status
+              verbs:
+                - get
+                - list
+                - watch
+                - create
+                - delete
+                - patch
+                - update
     strategy: deployment
   installModes:
     - supported: true
@@ -198,4 +198,4 @@ spec:
   provider:
     name: Red Hat
   version: 17.0.0
-  replaces: 17.0.0
+  replaces: keycloak-operator.v17.0.0
